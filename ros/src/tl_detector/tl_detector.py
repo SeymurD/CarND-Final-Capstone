@@ -45,7 +45,10 @@ class TLDetector(object):
         self.process_count = 0
 
         config_string = rospy.get_param("/traffic_light_config")
+        print('config_string: {}'.format(config_string))
         self.config = yaml.load(config_string)
+        self.is_site = self.config["is_site"]
+        self.light_classifier = TLClassifier(self.is_site)
 
         rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb, queue_size=2)
         rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb, queue_size=8)
